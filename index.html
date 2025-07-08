@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>悪役診断 😈</title>
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 30px;
+    }
+
+    .question {
+      margin: 30px 0 10px;
+      font-weight: bold;
+    }
+
+    .option {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 24px;
+      background-color: purple;
+      color: white;
+      border: 2px solid #333;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .option:hover {
+      background-color: #bb00ff;
+    }
+
+    .selected {
+      background-color: black;
+      border: 2px solid magenta;
+    }
+
+    .diagnose-button {
+      display: block;
+      margin: 40px auto 0;
+      padding: 14px 28px;
+      background-color: #FFD700;
+      color: black;
+      font-weight: bold;
+      font-size: 1.1em;
+      border: 2px solid #FFC107;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .diagnose-button:hover {
+      background-color: #FFC107;
+    }
+
+    .countdown {
+      font-size: 2em;
+      margin-top: 30px;
+      color: #ff00aa;
+      display: none;
+    }
+
+    .result-box {
+      margin-top: 40px;
+      padding: 30px;
+      background-color: #111;
+      border: 2px solid #555;
+      border-radius: 12px;
+      display: none;
+    }
+
+    .result-title {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    .result-quote {
+      font-style: italic;
+      color: #ff00aa;
+      margin: 10px 0;
+    }
+
+    .result-advice {
+      color: #aaa;
+      margin-top: 10px;
+    }
+
+    .result-share {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .share-button {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #444;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      margin: 5px;
+      transition: background-color 0.2s;
+    }
+
+    .share-button:hover {
+      background-color: #666;
+    }
+
+    .ad-box {
+      margin-top: 50px;
+      padding: 20px;
+      background-color: #222;
+      border: 2px dashed orange;
+      color: orange;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>悪役診断😈</h1>
+
+  <div class="question">Q1: 悪役タイプは？</div>
+  <div class="option" onclick="select(this, 'q1')">静かに動くスパイ</div>
+  <div class="option" onclick="select(this, 'q1')">圧倒するカリスマ</div>
+
+  <div class="question">Q2: 目的は？</div>
+  <div class="option" onclick="select(this, 'q2')">世界征服</div>
+  <div class="option" onclick="select(this, 'q2')">復讐</div>
+
+  <div class="question">Q3: 武器は？</div>
+  <div class="option" onclick="select(this, 'q3')">毒薬</div>
+  <div class="option" onclick="select(this, 'q3')">巨大ロボ</div>
+
+  <button class="diagnose-button" onclick="startDiagnosis()">診断する！</button>
+
+  <div class="countdown" id="countdown">5</div>
+
+  <div class="result-box" id="resultBox">
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-quote" id="resultQuote"></div>
+    <div class="result-advice" id="resultAdvice"></div>
+
+    <div class="result-share" id="resultShare">
+      <p style="color: #ccc;">🔗 結果をシェアしよう！</p>
+      <a id="shareTwitter" target="_blank" class="share-button">Xでシェア</a>
+      <a id="shareLine" target="_blank" class="share-button">LINEで送る</a>
+    </div>
+  </div>
+
+  <div class="ad-box">
+    ◆ ここに広告が入ります（AdSense） ◆
+  </div>
+
+  <script>
+    const selections = { q1: '', q2: '', q3: '' };
+
+    function select(element, question) {
+      selections[question] = element.innerText;
+      document.querySelectorAll('.option').forEach(el => {
+        if (el.innerText === selections[question] && el.onclick.toString().includes(question)) {
+          el.classList.add('selected');
+        } else if (el.onclick.toString().includes(question)) {
+          el.classList.remove('selected');
+        }
+      });
+    }
+
+    function startDiagnosis() {
+      const { q1, q2, q3 } = selections;
+      if (!q1 || !q2 || !q3) {
+        alert("すべての質問に答えてください！");
+        return;
+      }
+
+      document.getElementById('countdown').style.display = 'block';
+      document.getElementById('resultBox').style.display = 'none';
+      document.getElementById('resultShare').style.display = 'none';
+
+      let count = 5;
+      document.getElementById('countdown').innerText = count;
+      const timer = setInterval(() => {
+        count--;
+        document.getElementById('countdown').innerText = count;
+        if (count === 0) {
+          clearInterval(timer);
+          document.getElementById('countdown').style.display = 'none';
+          showResult();
+        }
+      }, 1000);
+    }
+
+    function showResult() {
+      const { q1, q2, q3 } = selections;
+
+      let title = "";
+      let quote = "";
+      let advice = "";
+
+      if (q1 === "静かに動くスパイ" && q2 === "世界征服" && q3 === "毒薬") {
+        title = "影の支配者タイプ";
+        quote = "「静寂こそ、最も恐ろしい刃だ。」";
+        advice = "目的のためには声を出さずとも、世界は操れる。";
+      } else if (q1 === "圧倒するカリスマ" && q2 === "復讐" && q3 === "巨大ロボ") {
+        title = "破壊の復讐者タイプ";
+        quote = "「絶望の中でしか、真の力は生まれない。」";
+        advice = "力の使い方次第で、世界は光にも闇にも染まる。";
+      } else {
+        title = "謎に包まれた存在";
+        quote = "「我が名を知ることは、滅びの序章。」";
+        advice = "その真の姿を知る者はいない…。しかし一歩踏み出すと、運命が動き出す。";
+      }
+
+      document.getElementById('resultTitle').innerText = title;
+      document.getElementById('resultQuote').innerText = quote;
+      document.getElementById('resultAdvice').innerText = advice;
+      document.getElementById('resultBox').style.display = 'block';
+
+      // シェアボタンの表示とリンク設定
+      const resultText = `私は「${title}」！ ${quote}`;
+      const pageUrl = location.href;
+
+      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(resultText)}&url=${encodeURIComponent(pageUrl)}`;
+      const lineUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(resultText)}`;
+
+      document.getElementById('shareTwitter').href = twitterUrl;
+      document.getElementById('shareLine').href = lineUrl;
+      document.getElementById('resultShare').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
